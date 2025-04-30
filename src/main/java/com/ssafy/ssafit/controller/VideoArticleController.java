@@ -30,68 +30,7 @@ public class VideoArticleController {
 		this.videoService = videoService;
 		this.commentService = commentService;
 	}
-
-	// 전체보기
-	@GetMapping({ "/index", "/" })
-	public String selectAllArticles(Model model) {
-		List<VideoArticleDto> articles = videoService.selectAll();
-		for (VideoArticleDto article : articles) {
-			String url = article.getVideoArticleUrl();
-			String videoId = url.substring(url.lastIndexOf("/") + 1);
-			article.setVideoArticleUrl(videoId);
-		}
-		model.addAttribute("articles", articles);
-		return "index";
-	}
-	
-	// 도움말 페이지
-	@GetMapping("/help")
-	public String help() {
-		return "help";
-	}
-	
-	// 정렬
-	@GetMapping("/index/views")
-	public String selectAllByViewcnt(Model model) {
-		List<VideoArticleDto> articles = videoService.selectAllByviewcnt();
-		model.addAttribute("articles", articles);
-		return "index"; // 기존 뷰 재사용 가능
-	}
-
-	// 검색 제목 (정확히 일치)
-	@GetMapping("/search/{title}")
-	public String searchByTitle(@PathVariable String title, Model model) {
-		List<VideoArticleDto> articles = videoService.searchByTitle(title);
-		model.addAttribute("articles", articles);
-		return "index"; // 검색 결과도 index 페이지 재활용
-	}
-	
-	// 검색 키워드 (부분 일치)
-	@GetMapping("/search")
-	public String searchByKeyword(@RequestParam String keyword, Model model) {
-		List<VideoArticleDto> articles = videoService.searchByKeyword(keyword);
-		// URL에서 비디오 ID 추출
-		for (VideoArticleDto article : articles) {
-			String url = article.getVideoArticleUrl();
-			String videoId = url.substring(url.lastIndexOf("/") + 1);
-			article.setVideoArticleUrl(videoId);
-		}
-		model.addAttribute("articles", articles);
-		model.addAttribute("searchKeyword", keyword);
-		return "index"; // 검색 결과도 index 페이지 재활용
-	}
-
-	// 상세보기
-	@GetMapping("/articles/{id}")
-	public String getArticleDetails(@PathVariable long id, Model model) {
-		VideoArticleDto article = videoService.detailArticle(id);
-		model.addAttribute("article", article);
-
-		List<CommentDto> comments = commentService.selectAll(id);
-		model.addAttribute("comments", comments);
-		return "detail"; // detail.jsp 또는 detail.html
-	}
-
+ 
 	// 댓글쓰기
 	@PostMapping("/articles/{id}/comment")
 	public String registerComment(@PathVariable long id, @ModelAttribute CommentDto comment, HttpSession session) {

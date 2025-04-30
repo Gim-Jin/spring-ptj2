@@ -24,7 +24,7 @@ public class AdminRestController {
 	
 	
 	@PostMapping("/login")
- 	public ResponseEntity<String> login(@RequestBody AdminLoginRequestDto adminLoginRequestDto, HttpSession session) {
+ 	public ResponseEntity<?> login(@RequestBody AdminLoginRequestDto adminLoginRequestDto, HttpSession session) {
 		
 		if (adminService.adminLogin(adminLoginRequestDto.getLoginId(), adminLoginRequestDto.getPassword())) {
 
@@ -34,7 +34,7 @@ public class AdminRestController {
 		}
 
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 틀렸습니다.");
-		
 	}
+	
 	
 }

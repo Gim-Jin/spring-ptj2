@@ -6,11 +6,11 @@ import com.ssafy.ssafit.dto.VideoArticleDto;
 
 public interface VideoArticleService {
 
-	public void createArticle(VideoArticleDto videoarticle);
+	public boolean createArticle(VideoArticleDto videoarticle);
 
-	public void updateArticle(VideoArticleDto videoarticle);
+	public boolean updateArticle(VideoArticleDto videoarticle);
 
-	public void deleteArticle(long id);
+	public boolean deleteArticle(long id);
 
 	// 자세히 보기
 	public VideoArticleDto detailArticle(long id);
