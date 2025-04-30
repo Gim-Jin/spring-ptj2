@@ -19,11 +19,11 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/articles")
-public class CommentRestController {
+public class CommentController {
 	
 	private final CommentService commentService;
 	
-	public CommentRestController(CommentService commentService) {
+	public CommentController(CommentService commentService) {
 		this.commentService = commentService;
 	}
 	
