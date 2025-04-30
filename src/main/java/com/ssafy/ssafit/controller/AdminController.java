@@ -78,56 +78,9 @@ public class AdminController {
 
 	}
 
-	@GetMapping("/users")
-	public String userList(Model model) {
 
-		model.addAttribute("users", userService.getAllUser());
-
-		return "adminUserList";
-	}
-
-	// TODO : email로 받을지, id로 받을지 결정해야함.
-	@GetMapping("/users/{email}")
-	public String userDetail(@PathVariable("email") String email, Model model) {
-
-		UserDto user = userService.getUserByEmail(email);
-
-		// 관리자는 유저의 모든 것을 알고 있어야 함. (오늘 프로젝트에서는 ㅎㅎ 에초에 DB에 암호화 해서 넣어야함.)
-		model.addAttribute("user", user);
-
-		return "adminUserDetail";
-
-	}
-
-	@GetMapping("/users/{email}/modify")
-	public String adminUserModifyForm(@PathVariable("email") String email, Model model) {
-
-		UserDto user = userService.getUserByEmail(email);
-
-		model.addAttribute("user",user);
-
-		return "adminUserModifyForm";
-
-	}
-
-	@PostMapping("/users/{email}/modify")
-	public String adminUserModify(@ModelAttribute UserDto user) {
-
-		userService.modifyUser(user);
-
-		// 수정 후 이메일 상세 페이지로 반환.
-		return "redirect:/admin/users/" + user.getUserEmail();
-
-	}
-
-	@GetMapping("/users/{email}/delete")
-	public String adminUserDelete(@PathVariable("email") String email) {
-
-		userService.withdrawUser(email);
-
-		return "redirect:/admin/users";
-
-	}
+	
+	
 
 	// 글 조회
 	@GetMapping("/articles")

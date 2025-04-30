@@ -10,7 +10,7 @@ public class VideoArticleDto {
     private int videoArticleViews;
 
     public VideoArticleDto(){}
-
+    
     public VideoArticleDto(long videoArticleId, String videoArticleTitle, String videoArticlePart,
                            String videoArticleChannel, String videoArticleUrl, int videoArticleViews) {
         this.videoArticleId = videoArticleId;

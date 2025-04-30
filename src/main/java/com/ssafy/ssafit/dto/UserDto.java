@@ -14,6 +14,7 @@ public class UserDto {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	public UserDto(long userId, String userEmail, String userPassword, String userNickName) {
 		super();
 		this.userId = userId;
