@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.ssafit.dto.AdminLoginRequestDto;
 import com.ssafy.ssafit.service.AdminService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 
+@Tag(description="어드민 컨트롤러", name="Admin Controller")
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {

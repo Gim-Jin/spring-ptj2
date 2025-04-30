@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.ssafit.dto.CommentDto;
 import com.ssafy.ssafit.service.CommentService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 
+@Tag(description = "댓글 컨트롤러", name="Comment Controller")
 @RestController
 @RequestMapping("/api/articles")
 public class CommentController {

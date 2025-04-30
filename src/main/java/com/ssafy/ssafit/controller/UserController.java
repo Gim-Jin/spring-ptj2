@@ -17,8 +17,10 @@ import com.ssafy.ssafit.dto.UserDto;
 import com.ssafy.ssafit.dto.UserLoginRequestDto;
 import com.ssafy.ssafit.service.UserService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 
+@Tag(description="유저 컨트롤러", name="User Controller")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

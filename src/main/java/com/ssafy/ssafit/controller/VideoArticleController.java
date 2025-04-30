@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.ssafit.dto.VideoArticleDto;
 import com.ssafy.ssafit.service.VideoArticleService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(description = "게시글 컨트롤", name = "Article Controller")
 @RestController
 @RequestMapping("/api/articles")
 public class VideoArticleController {
