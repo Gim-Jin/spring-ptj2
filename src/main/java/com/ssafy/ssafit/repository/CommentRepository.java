@@ -7,13 +7,13 @@ import com.ssafy.ssafit.dto.CommentDto;
 public interface CommentRepository {
 
 	// 추가
-	public void insert(CommentDto comment);
+	public int insert(CommentDto comment);
 
 	// 수정
-	public void update(CommentDto comment);
+	public int update(CommentDto comment);
 
 	// 삭제
-	public void delete(long id);
+	public int delete(long id);
 
 	// 조회
 	public CommentDto select(long id);

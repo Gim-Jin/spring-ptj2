@@ -13,6 +13,7 @@ public class AdminDto {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	public AdminDto(long adminId, String adminLoginId, String adminPassword) {
 		super();
 		this.adminId = adminId;

@@ -2,179 +2,90 @@ package com.ssafy.ssafit.controller;
 
 import java.util.List;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.ssafit.dto.CommentDto;
 import com.ssafy.ssafit.dto.VideoArticleDto;
-import com.ssafy.ssafit.service.CommentService;
 import com.ssafy.ssafit.service.VideoArticleService;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-import jakarta.servlet.http.HttpSession;
-
-@Controller
+@Tag(description = "게시글 컨트롤", name = "Article Controller")
+@RestController
+@RequestMapping("/api/articles")
 public class VideoArticleController {
-
+	
 	private final VideoArticleService videoService;
 	
-	private final CommentService commentService;
-
-	public VideoArticleController(VideoArticleService videoService, CommentService commentService) {
-		this.videoService = videoService;
-		this.commentService = commentService;
-	}
-
-	// 전체보기
-	@GetMapping({ "/index", "/" })
-	public String selectAllArticles(Model model) {
-		List<VideoArticleDto> articles = videoService.selectAll();
-		for (VideoArticleDto article : articles) {
-			String url = article.getVideoArticleUrl();
-			String videoId = url.substring(url.lastIndexOf("/") + 1);
-			article.setVideoArticleUrl(videoId);
-		}
-		model.addAttribute("articles", articles);
-		return "index";
-	}
-	
-	// 도움말 페이지
-	@GetMapping("/help")
-	public String help() {
-		return "help";
-	}
-	
-	// 정렬
-	@GetMapping("/index/views")
-	public String selectAllByViewcnt(Model model) {
-		List<VideoArticleDto> articles = videoService.selectAllByviewcnt();
-		model.addAttribute("articles", articles);
-		return "index"; // 기존 뷰 재사용 가능
-	}
-
-	// 검색 제목 (정확히 일치)
-	@GetMapping("/search/{title}")
-	public String searchByTitle(@PathVariable String title, Model model) {
-		List<VideoArticleDto> articles = videoService.searchByTitle(title);
-		model.addAttribute("articles", articles);
-		return "index"; // 검색 결과도 index 페이지 재활용
-	}
-	
-	// 검색 키워드 (부분 일치)
-	@GetMapping("/search")
-	public String searchByKeyword(@RequestParam String keyword, Model model) {
-		List<VideoArticleDto> articles = videoService.searchByKeyword(keyword);
-		// URL에서 비디오 ID 추출
-		for (VideoArticleDto article : articles) {
-			String url = article.getVideoArticleUrl();
-			String videoId = url.substring(url.lastIndexOf("/") + 1);
-			article.setVideoArticleUrl(videoId);
-		}
-		model.addAttribute("articles", articles);
-		model.addAttribute("searchKeyword", keyword);
-		return "index"; // 검색 결과도 index 페이지 재활용
-	}
-
-	// 상세보기
-	@GetMapping("/articles/{id}")
-	public String getArticleDetails(@PathVariable long id, Model model) {
-		VideoArticleDto article = videoService.detailArticle(id);
-		model.addAttribute("article", article);
-
-		List<CommentDto> comments = commentService.selectAll(id);
-		model.addAttribute("comments", comments);
-		return "detail"; // detail.jsp 또는 detail.html
-	}
-
-	// 댓글쓰기
-	@PostMapping("/articles/{id}/comment")
-	public String registerComment(@PathVariable long id, @ModelAttribute CommentDto comment, HttpSession session) {
-
-
+	public VideoArticleController(VideoArticleService videoService) {
 		
-		comment.setUserId(Long.parseLong(session.getAttribute("id").toString()));
-		commentService.createComment(comment);
-		return "redirect:/articles/"+id;
+		this.videoService = videoService;
+		
 	}
-
-	@PostMapping("/articles/{articleId}/comments/{commentId}/delete")
-	public String deleteComment(@PathVariable long articleId, @PathVariable long commentId) {
-		commentService.delete(commentId);
-		return "redirect:/articles/" + articleId;
-	}
-
-	@GetMapping("/articles/{articleId}/comments/{commentId}/edit")
-	public String editCommentForm(@PathVariable long articleId, @PathVariable long commentId, Model model) {
-		CommentDto comment = commentService.select(commentId);
-		model.addAttribute("comment", comment);
-		return "comment/editForm"; // JSP에서 수정 폼 렌더링
-	}
-
-	// 댓글 수정
-	@PostMapping("/articles/{articleId}/comments/{commentId}/update")
-	public String updateComment(@PathVariable long articleId, @PathVariable long commentId,
-			@ModelAttribute CommentDto commentDto) {
-		commentDto.setCommentId(commentId);
-		commentDto.setVideoArticleId(articleId);
-		commentService.updateComment(commentDto);
-		return "redirect:/articles/" + articleId;
-	}
-
-	// 부위별 조회하기
-	@GetMapping("/video/list")
-	public String videoListByCategory(@RequestParam String category, Model model) {
-		List<VideoArticleDto> articles = videoService.selectVideosByPart(category);
-		// URL에서 비디오 ID 추출
-		for (VideoArticleDto article : articles) {
+	
+	// articles 전체 조회
+	@GetMapping
+	public ResponseEntity<?> getArticles(
+			@RequestParam(name = "sort", required = false) String sort,
+		    @RequestParam(name = "title", required = false) String title,
+		    @RequestParam(name = "keyword", required = false) String keyword,
+		    @RequestParam(name = "part", required = false) String part){
+		 
+		List<VideoArticleDto> results = null;
+		
+		if(sort != null && sort.equals("viewcnt")) {
+			results = videoService.selectAllByviewcnt();
+		} else if(title != null) {
+			results = videoService.searchByTitle(title);
+		} else if(keyword != null) {
+			results = videoService.searchByKeyword(keyword);
+		} else if(part != null) {
+			results = videoService.selectVideosByPart(part);
+		} else {
+			results = videoService.selectAll();
+		}
+			
+		for (VideoArticleDto article : results) {
 			String url = article.getVideoArticleUrl();
 			String videoId = url.substring(url.lastIndexOf("/") + 1);
 			article.setVideoArticleUrl(videoId);
 		}
-		model.addAttribute("articles", articles);
-		model.addAttribute("selectedPart", category);
-		return "index";
+		
+		return results.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(results); 
 	}
 	
-	// 커뮤니티 준비 중 페이지
-	@GetMapping("/community")
-	public String communitySoon(Model model) {
-		model.addAttribute("title", "커뮤니티");
-		model.addAttribute("type", "community");
-		model.addAttribute("icon", "bi bi-tools");
-		model.addAttribute("message", "SSAFIT 커뮤니티 서비스를 준비하고 있습니다. 곧 다양한 운동 경험과 건강한 라이프스타일을 공유할 수 있는 공간이 완성될 예정입니다.");
-		return "coming_soon";
+	@GetMapping("/{articleId}")
+	public ResponseEntity<?> getArticle(@PathVariable("articleId") Long articleId) {
+		
+		VideoArticleDto result = videoService.detailArticle(articleId);
+		
+		return result != null ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
+		
 	}
 	
-	// 마이페이지 준비 중 페이지
-	@GetMapping("/mypage")
-	public String mypageSoon(Model model) {
-		model.addAttribute("title", "마이페이지");
-		model.addAttribute("type", "mypage");
-		model.addAttribute("icon", "bi bi-person-circle");
-		model.addAttribute("message", "SSAFIT 마이페이지 서비스를 준비하고 있습니다. 곧 개인 프로필 관리, 운동 기록, 활동 내역 등 다양한 기능을 제공할 예정입니다.");
-		return "coming_soon";
+	
+	@PostMapping
+	public ResponseEntity<?> registArticle(@RequestBody VideoArticleDto videoArticleDto) {
+		
+		return videoService.createArticle(videoArticleDto) ? ResponseEntity.ok("생성 완료") : ResponseEntity.badRequest().body("잘못된 입력입니다."); 
 	}
 	
-	// 찜한 영상 준비 중 페이지
-	@GetMapping("/favorites")
-	public String favoritesSoon(Model model) {
-		model.addAttribute("title", "찜한 영상");
-		model.addAttribute("type", "favorites");
-		model.addAttribute("icon", "bi bi-heart");
-		model.addAttribute("message", "SSAFIT 찜한 영상 서비스를 준비하고 있습니다. 곧 좋아하는 운동 영상을 저장하고 카테고리별로 관리할 수 있는 기능을 제공할 예정입니다.");
-		return "coming_soon";
+	@PutMapping
+	public ResponseEntity<?> modifyArticle(@RequestBody VideoArticleDto videoArticleDto) {
+		return videoService.updateArticle(videoArticleDto) ? ResponseEntity.ok("수정 완료") : ResponseEntity.badRequest().body("잘못된 입력입니다.");
 	}
 	
-	// 기존 /board/list 요청을 커뮤니티 준비 중 페이지로 리디렉션
-	@GetMapping("/board/list")
-	public String boardListRedirect() {
-		return "redirect:/community";
+	@DeleteMapping("/{articleId}")
+	public ResponseEntity<?> deleteArticle(@PathVariable("articleId") Long articleId) {
+		return videoService.deleteArticle(articleId) ? ResponseEntity.ok("삭제 완료") : ResponseEntity.badRequest().body("잘못된 입력입니다.");
 	}
-
+	
 }

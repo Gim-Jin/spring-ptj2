@@ -24,37 +24,37 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	@Transactional
-	public void registUser(UserDto user) {
+	public boolean registUser(UserDto user) {
 		
 		if(user == null) {
 			throw new InvalidUserFormatException();
 		}
 		
-		userRepository.insert(user);
+		return userRepository.insert(user) == 1 ? true : false;
 		
 	}
 
 	@Override
 	@Transactional
-	public void withdrawUser(String userEmail) {
+	public boolean withdrawUser(String userEmail) {
 		
 		if(userEmail == null || userEmail.equals("")) {
 			throw new InvalidUserFormatException();
 		}
 		
-		userRepository.deleteUserByEmail(userEmail);
+		return userRepository.deleteUserByEmail(userEmail) == 1 ? true : false;
 		
 	}
 
 	@Override
 	@Transactional
-	public void modifyUser(UserDto user) {
+	public boolean modifyUser(UserDto user) {
 		
 		if(user == null) {
 			throw new InvalidUserFormatException();
 		}
 		
-		userRepository.update(user);
+		return userRepository.update(user) == 1 ? true : false;
 		
 		
 	}

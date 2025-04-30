@@ -20,6 +20,7 @@ public class CommentDto {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	public CommentDto(long commentId, long userId, long videoArticleId, String commentContent, LocalDateTime writeDate, String userNickName) {
 		super();
 		this.commentId = commentId;

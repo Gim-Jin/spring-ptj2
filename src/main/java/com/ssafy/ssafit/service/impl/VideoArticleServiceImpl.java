@@ -18,20 +18,21 @@ public class VideoArticleServiceImpl implements VideoArticleService {
 	}
 
 	@Override
-	public void createArticle(VideoArticleDto videoarticle) {
-		videoRepository.insert(videoarticle);
-
+	public boolean createArticle(VideoArticleDto videoarticle) {
+		
+		return videoRepository.insert(videoarticle) == 1 ? true : false;
 	}
 
 	@Override
-	public void updateArticle(VideoArticleDto videoarticle) {
-		videoRepository.update(videoarticle);
-
+	public boolean updateArticle(VideoArticleDto videoarticle) {
+		
+		return videoRepository.update(videoarticle) == 1 ? true : false;
 	}
 
 	@Override
-	public void deleteArticle(long id) {
-		videoRepository.delete(id);
+	public boolean deleteArticle(long id) {
+		
+		return videoRepository.delete(id) == 1 ? true : false;
 	}
 
 	@Override

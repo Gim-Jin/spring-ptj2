@@ -6,14 +6,14 @@ import com.ssafy.ssafit.dto.UserDto;
 
 public interface UserRepository {
 	
-	public void insert(UserDto user);
+	public int insert(UserDto user);
 	
 	public UserDto selectByEmail(String email);
 	
-	public void deleteUserByEmail(String email);
+	public int deleteUserByEmail(String email);
 	
 	public List<UserDto> selectAll();
 	
-	public void update(UserDto user);
+	public int update(UserDto user);
 	
 }

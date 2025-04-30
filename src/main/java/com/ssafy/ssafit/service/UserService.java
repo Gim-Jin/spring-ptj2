@@ -6,11 +6,11 @@ import com.ssafy.ssafit.dto.UserDto;
 
 public interface UserService {
 	
-	public void registUser(UserDto user);
+	public boolean registUser(UserDto user);
 	
-	public void withdrawUser(String userEmail);
+	public boolean withdrawUser(String userEmail);
 	
-	public void modifyUser(UserDto user);
+	public boolean modifyUser(UserDto user);
 	
 	public List<UserDto> getAllUser();
 	

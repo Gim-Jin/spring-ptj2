@@ -1,6 +1,7 @@
 package com.ssafy.ssafit.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -22,15 +23,28 @@ public class WebConfig implements WebMvcConfigurer{
 	
 	
 	
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		
+//		registry.addInterceptor(loginCheckInterceptor)
+//		.excludePathPatterns("/", "/index", "/admin/**", "/users/regist", "/users/login", "/admin/login",
+//	            "/swagger-ui/**",
+//	            "/swagger-ui.html",
+//	            "/v3/api-docs/**",
+//	            "/swagger-resources/**",
+//	            "/webjars/**");
+//
+//		registry.addInterceptor(adminCheckInterceptor)
+//		.addPathPatterns("/admin/**")
+//		.excludePathPatterns("/admin/login");
+//		
+//	}
+	
 	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		
-		registry.addInterceptor(loginCheckInterceptor)
-		.excludePathPatterns("/","/index", "/admin/**","/users/regist" ,"/users/login","/admin/login");
-
-		registry.addInterceptor(adminCheckInterceptor)
-		.addPathPatterns("/admin/**")
-		.excludePathPatterns("/admin/login");
-		
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/api/**")
+		.allowedOrigins("http://localhost:3000") // 프론트 주소 적으면 됨.
+		.allowedMethods("GET", "POST", "PUT", "DELETE")
+		.allowCredentials(true); 
 	}
 }
