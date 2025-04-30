@@ -6,11 +6,11 @@ import com.ssafy.ssafit.dto.CommentDto;
 
 public interface CommentService {
 
-	public void createComment(CommentDto comment);
+	public boolean createComment(CommentDto comment);
 
-	public void updateComment(CommentDto comment);
+	public boolean updateComment(CommentDto comment);
 
-	public void delete(long id);
+	public boolean delete(long id);
 
 	public CommentDto select(long id);
 

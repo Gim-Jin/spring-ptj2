@@ -18,18 +18,18 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public void createComment(CommentDto comment) {
-		commentRepository.insert(comment);
+	public boolean createComment(CommentDto comment) {
+		return commentRepository.insert(comment) == 1 ? true : false;
 	}
 
 	@Override
-	public void updateComment(CommentDto comment) {
-		commentRepository.update(comment);
+	public boolean updateComment(CommentDto comment) {
+		return commentRepository.update(comment) == 1 ? true : false;
 	}
 
 	@Override
-	public void delete(long id) {
-		commentRepository.delete(id);
+	public boolean delete(long id) {
+		return commentRepository.delete(id) == 1 ? true : false;
 	}
 
 	@Override
