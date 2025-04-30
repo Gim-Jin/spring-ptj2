@@ -23,17 +23,22 @@ public class WebConfig implements WebMvcConfigurer{
 	
 	
 	
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		
-		registry.addInterceptor(loginCheckInterceptor)
-		.excludePathPatterns("/","/index", "/admin/**","/users/regist" ,"/users/login","/admin/login","/swagger-ui/**");
-
-		registry.addInterceptor(adminCheckInterceptor)
-		.addPathPatterns("/admin/**")
-		.excludePathPatterns("/admin/login");
-		
-	}
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		
+//		registry.addInterceptor(loginCheckInterceptor)
+//		.excludePathPatterns("/", "/index", "/admin/**", "/users/regist", "/users/login", "/admin/login",
+//	            "/swagger-ui/**",
+//	            "/swagger-ui.html",
+//	            "/v3/api-docs/**",
+//	            "/swagger-resources/**",
+//	            "/webjars/**");
+//
+//		registry.addInterceptor(adminCheckInterceptor)
+//		.addPathPatterns("/admin/**")
+//		.excludePathPatterns("/admin/login");
+//		
+//	}
 	
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {

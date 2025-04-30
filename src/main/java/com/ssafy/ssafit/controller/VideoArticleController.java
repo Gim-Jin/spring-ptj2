@@ -34,10 +34,10 @@ public class VideoArticleController {
 	// articles 전체 조회
 	@GetMapping
 	public ResponseEntity<?> getArticles(
-			@RequestParam(required = false) String sort,
-			@RequestParam(required = false) String title,
-			@RequestParam(required = false) String keyword,
-			@RequestParam(required = false) String part) {
+			@RequestParam(name = "sort", required = false) String sort,
+		    @RequestParam(name = "title", required = false) String title,
+		    @RequestParam(name = "keyword", required = false) String keyword,
+		    @RequestParam(name = "part", required = false) String part){
 		 
 		List<VideoArticleDto> results = null;
 		
