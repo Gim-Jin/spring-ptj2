@@ -7,13 +7,13 @@ import com.ssafy.ssafit.dto.VideoArticleDto;
 public interface VideoArticleRepository {
 
 	// 추가
-	public void insert(VideoArticleDto videoarticle);
+	public int insert(VideoArticleDto videoarticle);
 
 	// 수정
-	public void update(VideoArticleDto videoarticle);
+	public int update(VideoArticleDto videoarticle);
 
 	// 삭제
-	public void delete(long id);
+	public int delete(long id);
 
 	// 단일 조회
 	public VideoArticleDto selectById(long id);

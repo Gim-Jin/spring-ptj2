@@ -35,7 +35,7 @@ public class UserRestController {
 	
 	// 유저 정보 요청 받아왔을 때 그냥 email을 아이디로 잡을껄 
 	@GetMapping("/{email}")
-	public ResponseEntity<UserDto> getUser(@PathVariable("email") String email) {
+	public ResponseEntity<?> getUser(@PathVariable("email") String email) {
 		
 		UserDto result = userService.getUserByEmail(email);
 		
@@ -43,13 +43,13 @@ public class UserRestController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<String> registUser(@RequestBody UserDto user) {
+	public ResponseEntity<?> registUser(@RequestBody UserDto user) {
 		
 		return userService.registUser(user) ? ResponseEntity.ok("등록이 완료되었습니다.") : ResponseEntity.badRequest().body("잘못된 요청입니다.");
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<UserDto>> getUsers() {
+	public ResponseEntity<?> getUsers() {
 		
 		List<UserDto> results = userService.getAllUser();
 		
@@ -58,7 +58,7 @@ public class UserRestController {
 	}
 	
 	@PutMapping("/{email}")
-	public ResponseEntity<String> modifyUser(@PathVariable("email") String email, @RequestBody UserDto userDto) {
+	public ResponseEntity<?> modifyUser(@PathVariable("email") String email, @RequestBody UserDto userDto) {
 		
 		return userService.modifyUser(userDto) ? ResponseEntity.ok("수정이 완료되었습니다.") : ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		
@@ -66,7 +66,7 @@ public class UserRestController {
 	}
 	
 	@DeleteMapping("/{email}")
-	public ResponseEntity<String> deleteUser(@PathVariable("email") String email) {
+	public ResponseEntity<?> deleteUser(@PathVariable("email") String email) {
 		
 		return userService.withdrawUser(email) ? ResponseEntity.ok("수정이 완료되었습니다.") : ResponseEntity.badRequest().body("잘못된 요청입니다.");
 	
@@ -75,7 +75,7 @@ public class UserRestController {
 	// TODO : 쿠키에 대한 처리가 필요할 것 같은데.. 흠......현재는 토큰 안쓰고 그냥 깡으로 session에 박고 쿠키로 관리할 예정임.
 	// 문제는 백에서의 세션이랑 프론트에서의 세션이 똑같이 관리가 되냐임.. 일단은 GPT한테 물어본대로 처리해봄.
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody UserLoginRequestDto userLoginRequestDto, HttpSession session) {
+	public ResponseEntity<?> login(@RequestBody UserLoginRequestDto userLoginRequestDto, HttpSession session) {
 		
 		
 		UserDto loginedUser = userService.login(userLoginRequestDto.getUserEmail(), userLoginRequestDto.getUserPassword());
@@ -98,7 +98,7 @@ public class UserRestController {
 	}
 	
 	@GetMapping("/logout")
-	public ResponseEntity<String> logout(HttpSession session) {
+	public ResponseEntity<?> logout(HttpSession session) {
 		session.invalidate();
 		return ResponseEntity.ok("로그아웃 완료");
 	}
